@@ -1,7 +1,8 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Outfit, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider, GoogleOneTap } from "@clerk/nextjs";
 
-const geistSans = Geist({
+const geistSans = Outfit({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
@@ -18,12 +19,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    
     <html lang="en">
+      
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ClerkProvider>
+        <GoogleOneTap/>
         {children}
+        </ClerkProvider>
       </body>
     </html>
+    
   );
 }

@@ -34,3 +34,17 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+CourseForge AI is an intelligent course generator built using Next.js, Drizzle ORM, PostgreSQL, Tailwind CSS, Gemini AI, YouTube API, and Clerk for authentication. This platform allows users to generate structured learning paths by leveraging AI to curate video-based courses from YouTube.
+
+Key Features:
+✅ AI-Powered Course Generation – Uses Gemini AI to generate structured learning roadmaps based on user inputs.
+✅ YouTube Integration – Fetches and organizes high-quality educational content using the YouTube API.
+✅ Modern Tech Stack – Built with Next.js for fast and scalable performance, Drizzle ORM for efficient database management, and PostgreSQL as the backend database.
+✅ Sleek UI & UX – Styled with Tailwind CSS for a responsive and visually appealing design.
+✅ User Authentication – Secure sign-in and user management powered by Clerk.
+
+This project streamlines learning by curating AI-generated courses, making education more accessible and efficient. 🚀
+
+Let me know if you’d like any modifications! 😊
