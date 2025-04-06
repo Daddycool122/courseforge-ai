@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useContext } from 'react'
 import Image from 'next/image'
 import { AiOutlineHome } from "react-icons/ai";
 import { GiArmorUpgrade } from "react-icons/gi";
@@ -7,6 +7,8 @@ import { GoStack } from "react-icons/go";
 import { TbLogout } from "react-icons/tb";
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { UserCourseListContext } from '@/app/_context/UserCourseList';
+import { Progress } from '@/components/ui/progress';
 // Import only if you're using shadcn/ui's Progress
 // import { Progress } from "@/components/ui/progress"
 
@@ -38,6 +40,7 @@ const Sidebar = () => {
         },
     ]
     const path = usePathname()
+    const{ userCourseList,setUserCourseList}= useContext(UserCourseListContext)
   return (
     <div className='fixed h-full md:w-64 p-5 shadow-md'>
         <Image src={'/logo.svg'} alt='no' width={50} height={50}/>
@@ -58,13 +61,10 @@ const Sidebar = () => {
         </ul>
         <div className='absolute bottom-10 w-[80%]'>
             {/* Custom progress bar implementation */}
-            <div className="mt-4 rounded-full h-2 w-full bg-green-200 overflow-hidden">
-                <div 
-                    className="bg-[#18cf97] h-full rounded-full" 
-                    style={{ width: '60%' }}
-                ></div>
-            </div>
-            <h2 className='text-sm my-2'>3 out of 5 courses selected</h2>
+            
+                <Progress className={"bg-green-100"} value={(userCourseList.length/5)*100}/>
+            
+            <h2 className='text-sm my-2'>{userCourseList.length} out of 5 courses selected</h2>
             <h2 className='text-xs text-gray-500'>Upgrade your plan for unlimited course generation</h2>
         </div>
     </div>

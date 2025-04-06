@@ -63,8 +63,8 @@ const handleOptionChange = (fieldName, value) => {
               <SelectValue placeholder="Select duration" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="yes">Yes</SelectItem>
-              <SelectItem value="no">No</SelectItem>
+              <SelectItem value="Yes">Yes</SelectItem>
+              <SelectItem value="No">No</SelectItem>
             </SelectContent>
           </Select>
         </div>

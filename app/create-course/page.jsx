@@ -89,6 +89,7 @@ const CreateCourse = () => {
             courseId:id,
             name:userCourseInput?.Topic,
             difficulty:userCourseInput?.Difficulty,
+            includeVideo:userCourseInput?.Video,
             category:userCourseInput?.category,
             courseOutput:courseLayout,
             createdBy:user?.primaryEmailAddress?.emailAddress,

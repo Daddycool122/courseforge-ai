@@ -47,4 +47,4 @@ Key Features:
 
 This project streamlines learning by curating AI-generated courses, making education more accessible and efficient. 🚀
 
-Let me know if you’d like any modifications! 😊
+

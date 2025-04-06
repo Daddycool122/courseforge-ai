@@ -3,10 +3,14 @@ import { Button } from '@/components/ui/button'
 import { useUser } from '@clerk/nextjs'
 import { PlusCircle, BookOpen, Share2, TrendingUp } from 'lucide-react'
 import React from 'react'
+import { UserCourseListContext } from '@/app/_context/UserCourseList'
 import Link from 'next/link'
+import { useContext } from 'react'
 
 const AddCourse = () => {
   const { user } = useUser()
+    const {userCourseList,setUserCourseList} = useContext(UserCourseListContext)
+  
   
   return (
     <div className="rounded-xl bg-white p-8 shadow-md border border-gray-100">
@@ -42,7 +46,7 @@ const AddCourse = () => {
         </div>
         
         {/* Right side - CTA button */}
-        <Link href={"/create-course"} className="w-full md:w-auto">
+        <Link href={userCourseList.length>=5?"/dashboard/upgrade":"/create-course"} className="w-full md:w-auto">
         <Button 
           className="bg-[#18cf97] hover:bg-[#15b989] text-white px-6 py-6 rounded-lg text-md font-medium shadow-sm hover:shadow-md transition-all duration-200"
         >
