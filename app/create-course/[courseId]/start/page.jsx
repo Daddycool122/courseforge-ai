@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { db } from '@/configs/db';
-import { eq, and } from 'drizzle-orm';
-import { Chapters, CourseList } from '@/configs/schema';
-import ChapterListCard from './_components/ChapterListCard';
-import ChapterContent from './_components/ChapterContent';
+import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { db } from "@/configs/db";
+import { eq, and } from "drizzle-orm";
+import { Chapters, CourseList } from "@/configs/schema";
+import ChapterListCard from "./_components/ChapterListCard";
+import ChapterContent from "./_components/ChapterContent";
 
 function CourseStart() {
   const params = useParams();
@@ -16,8 +16,7 @@ function CourseStart() {
   const [chapterContent, setChapterContent] = useState(null);
 
   const fetchCourse = async () => {
-    const result = await db.select().from(CourseList)
-      .where(eq(CourseList.courseId, courseId));
+    const result = await db.select().from(CourseList).where(eq(CourseList.courseId, courseId));
 
     if (result?.length) {
       const courseData = result[0];
@@ -32,13 +31,10 @@ function CourseStart() {
   };
 
   const fetchChapterContent = async (chapterId, courseId) => {
-    const result = await db.select().from(Chapters)
-      .where(
-        and(
-          eq(Chapters.chapterId, chapterId),
-          eq(Chapters.courseId, courseId)
-        )
-      );
+    const result = await db
+      .select()
+      .from(Chapters)
+      .where(and(eq(Chapters.chapterId, chapterId), eq(Chapters.courseId, courseId)));
 
     if (result?.length) {
       setChapterContent(result[0]);
@@ -49,30 +45,29 @@ function CourseStart() {
     if (courseId) fetchCourse();
   }, [courseId]);
 
-  // ✅ Add this to log chapterContent whenever it changes
   useEffect(() => {
-    console.log('chapterContent:', chapterContent);
+    console.log("chapterContent:", chapterContent);
   }, [chapterContent]);
 
   if (!course || !course.courseOutput) {
-    return <div>Loading...</div>;
+    return <div className="p-4 text-center">Loading...</div>;
   }
 
   const courseName = course.courseOutput["Course Name"] || course.courseOutput["Course name"];
 
   return (
-    <div className='flex'>
-      <div className='fixed md:w-64 hidden md:block h-screen border-r shadow-sm'>
-        <h2 className='bg-[#18cf97] p-2 font-md text-white'>{courseName}</h2>
-        <div>
+    <div className="flex flex-col md:flex-row">
+      {/* Sidebar - Hidden on mobile */}
+      <div className="fixed w-full md:w-64 h-auto md:h-screen border-b md:border-r shadow-sm bg-white z-10 hidden md:block">
+        <h2 className="bg-[#18cf97] p-2 font-medium text-white text-base md:text-lg">{courseName}</h2>
+        <div className="max-h-[calc(100vh-4rem)] overflow-y-auto">
           {course.courseOutput.Chapters?.map((chapter, index) => {
-            const chapterName = chapter["Chapter Name"] || chapter["Chapter name"];
             const isSelected = selectedChapter === chapter;
 
             return (
               <div
                 key={index}
-                className={`cursor-pointer hover:bg-green-100 ${isSelected ? 'bg-green-100' : ''}`}
+                className={`cursor-pointer hover:bg-green-100 ${isSelected ? "bg-green-100" : ""}`}
                 onClick={() => {
                   setSelectedChapter(chapter);
                   fetchChapterContent(index + 1, course.courseId);
@@ -85,12 +80,33 @@ function CourseStart() {
         </div>
       </div>
 
-      <div className='md:ml-64 w-full'>
+      {/* Main Content */}
+      <div className="w-full md:ml-64 mt-0 md:mt-0">
         {selectedChapter && (
-          <div className="p-4 text-xl font-semibold">
+          <div className="p-2 md:p-4 text-lg md:text-xl font-semibold">
             <ChapterContent chapter={selectedChapter} content={chapterContent} />
           </div>
         )}
+      </div>
+
+      {/* Optional: Mobile Chapter List Toggle */}
+      <div className="md:hidden p-2 bg-white border-t shadow-sm">
+        <select
+          className="w-full p-2 border rounded-lg"
+          value={course.courseOutput.Chapters?.indexOf(selectedChapter) || 0}
+          onChange={(e) => {
+            const index = parseInt(e.target.value);
+            const chapter = course.courseOutput.Chapters[index];
+            setSelectedChapter(chapter);
+            fetchChapterContent(index + 1, course.courseId);
+          }}
+        >
+          {course.courseOutput.Chapters?.map((chapter, index) => (
+            <option key={index} value={index}>
+              {chapter["Chapter Name"] || chapter["Chapter name"]}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );

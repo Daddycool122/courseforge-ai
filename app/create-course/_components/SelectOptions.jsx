@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Select,
   SelectContent,
@@ -8,25 +8,28 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { UserInputContext } from "@/app/_context/UserInputContext";
-import { useContext } from "react";
-
 
 function SelectOptions() {
-const {userCourseInput,setUserCourseInput} = useContext(UserInputContext);
-const handleOptionChange = (fieldName, value) => {
+  const { userCourseInput, setUserCourseInput } = useContext(UserInputContext);
+
+  const handleOptionChange = (fieldName, value) => {
     setUserCourseInput((prev) => ({
       ...prev,
       [fieldName]: value,
     }));
-}
+  };
+
   return (
-    <div className="w-full px-36">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="w-full px-4 md:px-10 lg:px-36">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <div className="flex flex-col space-y-2">
-          <label className="text-sm font-medium"> 
-            👨‍🎓Difficulty Level
+          <label className="text-xs md:text-sm font-medium">
+            👨‍🎓 Difficulty Level
           </label>
-          <Select  onValueChange={(value) => handleOptionChange('Difficulty', value)} defaultValue={userCourseInput?.Difficulty}>
+          <Select
+            onValueChange={(value) => handleOptionChange("Difficulty", value)}
+            defaultValue={userCourseInput?.Difficulty}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select difficulty" />
             </SelectTrigger>
@@ -37,12 +40,15 @@ const handleOptionChange = (fieldName, value) => {
             </SelectContent>
           </Select>
         </div>
-        
+
         <div className="flex flex-col space-y-2">
-          <label className="text-sm font-medium" > 
-            ⌛Course Duration
+          <label className="text-xs md:text-sm font-medium">
+            ⌛ Course Duration
           </label>
-          <Select onValueChange={(value) => handleOptionChange('Duration', value)} defaultValue={userCourseInput?.Duration}>
+          <Select
+            onValueChange={(value) => handleOptionChange("Duration", value)}
+            defaultValue={userCourseInput?.Duration}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select duration" />
             </SelectTrigger>
@@ -55,12 +61,15 @@ const handleOptionChange = (fieldName, value) => {
         </div>
 
         <div className="flex flex-col space-y-2">
-          <label className="text-sm font-medium"> 
-            🎥Add Video
+          <label className="text-xs md:text-sm font-medium">
+            🎥 Add Video
           </label>
-          <Select onValueChange={(value) => handleOptionChange('Video', value)} defaultValue={userCourseInput?.Video}>
+          <Select
+            onValueChange={(value) => handleOptionChange("Video", value)}
+            defaultValue={userCourseInput?.Video}
+          >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select duration" />
+              <SelectValue placeholder="Add video?" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="Yes">Yes</SelectItem>
@@ -70,10 +79,15 @@ const handleOptionChange = (fieldName, value) => {
         </div>
 
         <div className="flex flex-col space-y-2">
-          <label className="text-sm font-medium"> 
-            📖No of Lessons
+          <label className="text-xs md:text-sm font-medium">
+            📖 No of Lessons
           </label>
-          <Input  type="number" onChange={(e) => handleOptionChange('No_of_lessons', e.target.value)} defaultValue={userCourseInput?.No_of_lessons}/>
+          <Input
+            type="number"
+            onChange={(e) => handleOptionChange("No_of_lessons", e.target.value)}
+            defaultValue={userCourseInput?.No_of_lessons}
+            className="w-full"
+          />
         </div>
       </div>
     </div>
