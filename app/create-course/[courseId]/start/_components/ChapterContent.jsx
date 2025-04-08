@@ -1,14 +1,41 @@
 import React from "react";
 import YouTube from "react-youtube";
-import ReactMarkdown from "react-markdown";
+import DOMPurify from "dompurify"; // Add this package for security
 
 function ChapterContent({ chapter, content }) {
   const opts = {
     height: "100%", // Use percentage for responsiveness
-    width: "100%",  // Use percentage for responsiveness
+    width: "100%", // Use percentage for responsiveness
     playerVars: {
       autoplay: 0,
     },
+  };
+
+  // Function to format code examples with proper line breaks
+  const formatCodeExample = (codeExample) => {
+    if (!codeExample) return "";
+    
+    // Replace <precode> tags to be on their own lines
+    let formatted = codeExample.replace(/<precode>/g, '<precode>\n');
+    formatted = formatted.replace(/<\/precode>/g, '\n</precode>');
+    
+    // Ensure hashtags start on new lines
+    formatted = formatted.replace(/([^\n])#/g, '$1\n#');
+    
+    return formatted;
+  };
+
+  // Function to process explanation text - removing ** markers
+  const processExplanation = (explanation) => {
+    if (!explanation) return "";
+    
+    // Simply remove all ** markers without adding HTML tags
+    let processed = explanation.replace(/\*\*/g, '');
+    
+    // Ensure numbered items (like "1.", "2.") start on new lines
+    processed = processed.replace(/([^\n])(\d+\.\s)/g, '$1\n$2');
+    
+    return processed;
   };
 
   return (
@@ -31,15 +58,24 @@ function ChapterContent({ chapter, content }) {
       </div>
 
       <div className="p-2 md:p-5 mb-5 rounded-lg">
-        {content?.content.map((item, index) => (
+        {content?.content?.map((item, index) => (
           <div key={index} className="p-3 md:p-5 rounded-lg bg-sky-100 mb-3 md:mb-5">
             <h2 className="font-medium text-lg md:text-xl">{item?.title}</h2>
-            <div className="text-xs md:text-sm">
-              <ReactMarkdown>{item?.explanation}</ReactMarkdown>
-            </div>
+            {item?.explanation && (
+              <div
+                className="text-xs md:text-sm whitespace-pre-line"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify
+                    ? DOMPurify.sanitize(processExplanation(item.explanation))
+                    : processExplanation(item.explanation),
+                }}
+              />
+            )}
             {item?.codeExample && (
               <pre className="p-2 md:p-4 bg-black text-white rounded-lg my-2 md:my-4">
-                <code className="text-xs md:text-sm">{item?.codeExample}</code>
+                <code className="text-xs md:text-sm whitespace-pre-wrap">
+                  {formatCodeExample(item?.codeExample)}
+                </code>
               </pre>
             )}
           </div>

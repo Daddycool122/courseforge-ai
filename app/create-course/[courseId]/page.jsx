@@ -13,14 +13,32 @@ import LoadingDialog from "../_components/LoadingDialog";
 import service from "@/configs/service";
 import { useRouter } from "next/navigation";
 
+// 🔧 Helper to safely parse AI's JSON response
+function safeParseJSON(jsonString) {
+  try {
+    const match = jsonString.match(/\[\s*\{[\s\S]*?\}\s*\]/);
+    if (!match) throw new Error("No valid JSON array found in response");
+
+    const fixed = match[0]
+      .replace(/\\n/g, "")
+      .replace(/\\"/g, "'")
+      .replace(/“|”/g, '"')
+      .replace(/‘|’/g, "'");
+
+    return JSON.parse(fixed);
+  } catch (e) {
+    console.error("❌ Failed to parse JSON safely:", e);
+    return null;
+  }
+}
+
 function CourseLayout({ params: paramsPromise }) {
   const { user } = useUser();
   const [course, setCourse] = useState(null);
-  const params = React.use(paramsPromise); // Unwrap the params Promise here
+  const params = React.use(paramsPromise); // Unwrap promise params
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // Use the unwrapped params.courseId in useEffect
   useEffect(() => {
     if (params?.courseId && user?.primaryEmailAddress?.emailAddress) {
       GetCourse();
@@ -38,6 +56,7 @@ function CourseLayout({ params: paramsPromise }) {
             eq(CourseList.createdBy, user?.primaryEmailAddress?.emailAddress)
           )
         );
+
       if (result.length > 0) {
         setCourse(result[0]);
       }
@@ -53,15 +72,29 @@ function CourseLayout({ params: paramsPromise }) {
     try {
       for (const [index, chapter] of chapters.entries()) {
         const chapterName = chapter["Chapter name"] || chapter["Chapter Name"];
-        const PROMPT = `Explain the concept in Detail on Topic: ${course?.name}, Chapter ${chapterName}, in JSON Format with list of array with field as title, explanation on given chapter in detail, Code Example (Code field in <precode> format) if applicable`;
-        console.log(PROMPT);
+        const prompt = `
+ONLY return a valid JSON array of objects, no explanation or intro text.
+Each object must include:
+- "title": string
+- "explanation": string
+- "codeExample": string (wrap code in <precode>...</precode>)
+
+Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
+        `.trim();
+
+        console.log("📥 Prompt:\n", prompt);
 
         try {
           const videoResp = await service.getVideos(`${course?.name} ${chapterName}`);
           const videoId = videoResp[0]?.id?.videoId || "";
 
-          const result = await GenerateChapterContent_AI.sendMessage(PROMPT);
-          const content = JSON.parse(result?.response?.text());
+          const result = await GenerateChapterContent_AI.sendMessage(prompt);
+          const rawText = await result?.response?.text();
+
+          console.log(`📤 Raw AI Response for Chapter ${index + 1}:\n`, rawText);
+
+          const content = safeParseJSON(rawText);
+          if (!content) throw new Error("Parsed content is null or invalid.");
 
           await db.insert(Chapters).values({
             chapterId: index + 1,
@@ -69,15 +102,20 @@ function CourseLayout({ params: paramsPromise }) {
             content: content,
             videoId: videoId,
           });
+
         } catch (error) {
-          console.error(`Error generating content for chapter ${index + 1}:`, error);
+          console.error(`❌ Error generating content for chapter ${index + 1}:`, error);
         }
       }
 
-      await db.update(CourseList).set({ publish: true }).where(eq(CourseList.courseId, course?.courseId));
+      await db.update(CourseList)
+        .set({ publish: true })
+        .where(eq(CourseList.courseId, course?.courseId));
+
       router.replace(`/create-course/${course?.courseId}/finish`);
+
     } catch (error) {
-      console.error("Error in GenerateChapterContent:", error);
+      console.error("❌ Error in GenerateChapterContent:", error);
     } finally {
       setLoading(false);
     }

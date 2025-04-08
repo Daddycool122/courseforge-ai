@@ -66,21 +66,54 @@ const CreateCourse = () => {
         return false
     }
     const {user}=useUser()
-    const GenerateCourseLayout = async()=>{
+    const GenerateCourseLayout = async () => {
         setLoading(true);
-        const BASIC_PROMPT = `Generate a course Tutorial on Following details with fields Course name , Description along with Chapter Name, About ,Duration.`;
-
-        const USER_INPUT_PROMPT = `Category:${userCourseInput?.category}, Topic :${userCourseInput?.Topic}, Difficulty :${userCourseInput?.Difficulty},Duration:${userCourseInput?.Duration}, Noumber of lessons:${userCourseInput?.No_of_lessons} in JSON format`
+        const BASIC_PROMPT = `
+        ONLY return a valid JSON object. Do NOT include any introduction, explanation, or code block markers (like \`\`\`). 
+        The JSON must be structured like:
+        
+        {
+          "Course name": "string",
+          "Category": "string",
+          "Topic": "string",
+          "Difficulty": "string",
+          "Total Duration": "string",
+          "Number of lessons": "number",
+          "Description": "string",
+          "Chapters": [
+            {
+              "Chapter Name": "string",
+              "About": "string",
+              "Duration": "string"
+            }
+          ]
+        }
+        `;
+              
+        const USER_INPUT_PROMPT = `Category: ${userCourseInput?.category}, Topic: ${userCourseInput?.Topic}, Difficulty: ${userCourseInput?.Difficulty}, Duration: ${userCourseInput?.Duration}, Number of lessons: ${userCourseInput?.No_of_lessons}`;
         const FINAL_PROMPT = BASIC_PROMPT + USER_INPUT_PROMPT;
-        console.log("FINAL_PROMPT", FINAL_PROMPT);
-
-        const result = await GenerateCourseLayout_AI.sendMessage(FINAL_PROMPT);
-        console.log(JSON.parse(result?.response?.text()));
-        setLoading(false);
-        SaveCourseLayoutInDB(JSON.parse(result?.response?.text()));
-        
-        
-    }
+      
+        try {
+          const result = await GenerateCourseLayout_AI.sendMessage(FINAL_PROMPT);
+          const rawText = result?.response?.text();
+          console.log("RAW AI RESPONSE >>>", rawText);
+      
+          const firstBrace = rawText.indexOf("{");
+          const lastBrace = rawText.lastIndexOf("}");
+          const jsonSubstring = rawText.substring(firstBrace, lastBrace + 1);
+      
+          const parsed = JSON.parse(jsonSubstring);
+          console.log("PARSED JSON >>>", parsed);
+      
+          SaveCourseLayoutInDB(parsed);
+        } catch (err) {
+          console.error("❌ Failed to parse AI response as JSON:", err);
+          alert("Oops! The AI response wasn't valid JSON. Please retry or modify the input.");
+        } finally {
+          setLoading(false);
+        }
+      };
+      
 
     const SaveCourseLayoutInDB=async (courseLayout)=>{
         var id = uuid4();

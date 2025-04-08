@@ -16,7 +16,10 @@ function CourseStart() {
   const [chapterContent, setChapterContent] = useState(null);
 
   const fetchCourse = async () => {
-    const result = await db.select().from(CourseList).where(eq(CourseList.courseId, courseId));
+    const result = await db
+      .select()
+      .from(CourseList)
+      .where(eq(CourseList.courseId, courseId));
 
     if (result?.length) {
       const courseData = result[0];
@@ -34,7 +37,9 @@ function CourseStart() {
     const result = await db
       .select()
       .from(Chapters)
-      .where(and(eq(Chapters.chapterId, chapterId), eq(Chapters.courseId, courseId)));
+      .where(
+        and(eq(Chapters.chapterId, chapterId), eq(Chapters.courseId, courseId))
+      );
 
     if (result?.length) {
       setChapterContent(result[0]);
@@ -53,13 +58,16 @@ function CourseStart() {
     return <div className="p-4 text-center">Loading...</div>;
   }
 
-  const courseName = course.courseOutput["Course Name"] || course.courseOutput["Course name"];
+  const courseName =
+    course.courseOutput["Course Name"] || course.courseOutput["Course name"];
 
   return (
     <div className="flex flex-col md:flex-row">
       {/* Sidebar - Hidden on mobile */}
       <div className="fixed w-full md:w-64 h-auto md:h-screen border-b md:border-r shadow-sm bg-white z-10 hidden md:block">
-        <h2 className="bg-[#18cf97] p-2 font-medium text-white text-base md:text-lg">{courseName}</h2>
+        <h2 className="bg-[#18cf97] p-2 font-medium text-white text-base md:text-lg">
+          {courseName}
+        </h2>
         <div className="max-h-[calc(100vh-4rem)] overflow-y-auto">
           {course.courseOutput.Chapters?.map((chapter, index) => {
             const isSelected = selectedChapter === chapter;
@@ -67,7 +75,9 @@ function CourseStart() {
             return (
               <div
                 key={index}
-                className={`cursor-pointer hover:bg-green-100 ${isSelected ? "bg-green-100" : ""}`}
+                className={`cursor-pointer hover:bg-green-100 ${
+                  isSelected ? "bg-green-100" : ""
+                }`}
                 onClick={() => {
                   setSelectedChapter(chapter);
                   fetchChapterContent(index + 1, course.courseId);
@@ -84,13 +94,16 @@ function CourseStart() {
       <div className="w-full md:ml-64 mt-0 md:mt-0">
         {selectedChapter && (
           <div className="p-2 md:p-4 text-lg md:text-xl font-semibold">
-            <ChapterContent chapter={selectedChapter} content={chapterContent} />
+            <ChapterContent
+              chapter={selectedChapter}
+              content={chapterContent}
+            />
           </div>
         )}
       </div>
 
       {/* Optional: Mobile Chapter List Toggle */}
-      <div className="md:hidden p-2 bg-white border-t shadow-sm">
+      <div className="md:hidden p-2 bg-blue-200 border-t shadow-sm">
         <select
           className="w-full p-2 border rounded-lg"
           value={course.courseOutput.Chapters?.indexOf(selectedChapter) || 0}
