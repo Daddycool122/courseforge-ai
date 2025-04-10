@@ -12,6 +12,9 @@ import { GenerateChapterContent_AI } from "@/configs/AiModel";
 import LoadingDialog from "../_components/LoadingDialog";
 import service from "@/configs/service";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import confetti from "canvas-confetti";
+import { FaRocket, FaCheckCircle } from "react-icons/fa";
 
 // 🔧 Helper to safely parse AI's JSON response
 function safeParseJSON(jsonString) {
@@ -22,8 +25,8 @@ function safeParseJSON(jsonString) {
     const fixed = match[0]
       .replace(/\\n/g, "")
       .replace(/\\"/g, "'")
-      .replace(/“|”/g, '"')
-      .replace(/‘|’/g, "'");
+      .replace(/"|"/g, '"')
+      .replace(/'|'/g, "'");
 
     return JSON.parse(fixed);
   } catch (e) {
@@ -38,6 +41,9 @@ function CourseLayout({ params: paramsPromise }) {
   const params = React.use(paramsPromise); // Unwrap promise params
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [generationProgress, setGenerationProgress] = useState(0);
+  const [generatingChapter, setGeneratingChapter] = useState("");
+  const [completedChapters, setCompletedChapters] = useState([]); 
 
   useEffect(() => {
     if (params?.courseId && user?.primaryEmailAddress?.emailAddress) {
@@ -65,13 +71,51 @@ function CourseLayout({ params: paramsPromise }) {
     }
   };
 
+  const triggerConfetti = () => {
+    const duration = 3000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    function randomInRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    const interval = setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+      
+      // Left side
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+      });
+      
+      // Right side
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+      });
+    }, 250);
+  };
+
   const GenerateChapterContent = async () => {
     setLoading(true);
     const chapters = course?.courseOutput?.Chapters || [];
+    setCompletedChapters([]);
 
     try {
       for (const [index, chapter] of chapters.entries()) {
         const chapterName = chapter["Chapter name"] || chapter["Chapter Name"];
+        setGeneratingChapter(chapterName);
+        setGenerationProgress(((index) / chapters.length) * 100);
+
         const prompt = `
 ONLY return a valid JSON array of objects, no explanation or intro text.
 Each object must include:
@@ -103,6 +147,9 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
             videoId: videoId,
           });
 
+          setCompletedChapters(prev => [...prev, chapterName]);
+          setGenerationProgress(((index + 1) / chapters.length) * 100);
+
         } catch (error) {
           console.error(`❌ Error generating content for chapter ${index + 1}:`, error);
         }
@@ -112,7 +159,13 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
         .set({ publish: true })
         .where(eq(CourseList.courseId, course?.courseId));
 
-      router.replace(`/create-course/${course?.courseId}/finish`);
+      setGenerationProgress(100);
+      triggerConfetti();
+      
+      // Give time for the user to see the completion and confetti
+      setTimeout(() => {
+        router.replace(`/create-course/${course?.courseId}/finish`);
+      }, 3000);
 
     } catch (error) {
       console.error("❌ Error in GenerateChapterContent:", error);
@@ -121,23 +174,153 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
     }
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1, 
+      transition: { 
+        duration: 0.5,
+        when: "beforeChildren",
+        staggerChildren: 0.2
+      } 
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.5 } }
+  };
+
   if (!course) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="p-4 bg-white rounded-lg shadow-lg flex flex-col items-center">
+          <div className="w-16 h-16 border-4 border-t-4 border-t-[#15b989] border-gray-200 rounded-full animate-spin"></div>
+          <p className="mt-4 text-gray-600">Loading your course...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="mt-10 px-7 md:px-20 lg:px-44">
-      <h2 className="font-bold text-center text-3xl">Course Layout</h2>
-      <LoadingDialog loading={loading} />
+    <motion.div 
+      className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 md:px-8 lg:px-16"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+      <motion.div
+        className="max-w-6xl mx-auto"
+        variants={itemVariants}
+      >
+        {/* Header Section */}
+        <motion.div className="text-center mb-10" variants={itemVariants}>
+          <div className="relative inline-block">
+            <h2 className="font-bold text-4xl text-[#15b989]">Course Layout</h2>
+            <motion.div 
+              className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-[#15b989] h-1 w-0"
+              animate={{ width: "80%" }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+            />
+          </div>
+          <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+            Review your course structure and generate detailed content for each chapter.
+          </p>
+        </motion.div>
 
-      <CourseBasicInfo course={course} refreshData={() => GetCourse()} />
-      <CourseDetails course={course} />
-      <ChapterList course={course} refreshData={() => GetCourse()} />
+        {/* Loading Dialog */}
+        {loading && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full">
+              <div className="text-center">
+                <div className="mb-4">
+                  <div className="w-16 h-16 mx-auto border-4 border-t-4 border-t-[#15b989] border-gray-200 rounded-full animate-spin"></div>
+                </div>
+                <h3 className="text-xl font-bold mb-2">Generating Course Content</h3>
+                <p className="text-gray-600 mb-4">
+                  {generatingChapter ? `Currently working on: "${generatingChapter}"` : "Preparing your course content..."}
+                </p>
 
-      <Button className="my-10 ml-8" onClick={GenerateChapterContent}>
-        Generate Content
-      </Button>
-    </div>
+                {/* Progress bar */}
+                <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
+                  <motion.div 
+                    className="bg-[#15b989] h-4 rounded-full"
+                    initial={{ width: "0%" }}
+                    animate={{ width: `${generationProgress}%` }}
+                    transition={{ duration: 0.5 }}
+                  />
+                </div>
+                <p className="text-sm text-gray-500">
+                  {generationProgress.toFixed(0)}% complete
+                </p>
+
+                {/* Completed chapters */}
+                {completedChapters.length > 0 && (
+                  <div className="mt-4 text-left border-t pt-4">
+                    <h4 className="font-medium mb-2 text-sm">Completed Chapters:</h4>
+                    <div className="max-h-40 overflow-y-auto">
+                      {completedChapters.map((chapter, index) => (
+                        <div key={index} className="flex items-center text-sm text-gray-600 mb-1">
+                          <FaCheckCircle className="text-green-500 mr-2" />
+                          <span>{chapter}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Content Sections */}
+        <div className="space-y-8">
+          <motion.div 
+            className="bg-white rounded-xl shadow-lg p-6 overflow-hidden relative"
+            variants={itemVariants}
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-green-50 to-teal-100 rounded-bl-full opacity-50 -z-10" />
+            <h3 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">Course Information</h3>
+            <CourseBasicInfo course={course} refreshData={() => GetCourse()} />
+          </motion.div>
+
+          <motion.div 
+            className="bg-white rounded-xl shadow-lg p-6 overflow-hidden relative"
+            variants={itemVariants}
+          >
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-green-50 to-teal-100 rounded-tr-full opacity-50 -z-10" />
+            <h3 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">Course Details</h3>
+            <CourseDetails course={course} />
+          </motion.div>
+
+          <motion.div 
+            className="bg-white rounded-xl shadow-lg p-6"
+            variants={itemVariants}
+          >
+            <h3 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">Chapter List</h3>
+            <ChapterList course={course} refreshData={() => GetCourse()} />
+          </motion.div>
+
+          <motion.div 
+            className="flex justify-center mt-8"
+            variants={itemVariants}
+          >
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Button 
+                className="py-6 px-8 rounded-lg text-lg font-medium shadow-lg transition-all duration-300 bg-gradient-to-r from-[#15b989] to-[#0e9d74] text-white hover:from-[#129e74] hover:to-[#0d8c66] flex items-center space-x-3"
+                onClick={GenerateChapterContent}
+              >
+                <FaRocket className="mr-2" size={20} />
+                <span>Generate Course Content</span>
+              </Button>
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

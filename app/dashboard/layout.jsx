@@ -2,7 +2,6 @@
 import React, { useState } from 'react'
 import Sidebar from './_components/Sidebar'
 import Header from './_components/Header'
-import  UserCourseList  from './_components/UserCourseList'
 import { UserCourseListContext } from '../_context/UserCourseList'
 const DashboardLayout = ({children}) => {
   const [userCourseList,setUserCourseList]=useState([]);
