@@ -19,18 +19,56 @@ import { FaRocket, FaCheckCircle } from "react-icons/fa";
 // 🔧 Helper to safely parse AI's JSON response
 function safeParseJSON(jsonString) {
   try {
-    const match = jsonString.match(/\[\s*\{[\s\S]*?\}\s*\]/);
-    if (!match) throw new Error("No valid JSON array found in response");
+    // First try parsing the entire string as JSON directly
+    try {
+      return JSON.parse(jsonString);
+    } catch (e) {
+      // If direct parsing fails, attempt to extract JSON
+      console.log("Direct parsing failed, trying to extract JSON...");
+    }
 
-    const fixed = match[0]
-      .replace(/\\n/g, "")
-      .replace(/\\"/g, "'")
+    // Look for array pattern first (most common for chapter content)
+    let match = jsonString.match(/(\[[\s\S]*\])/);
+    if (match) {
+      const extracted = match[1].trim();
+      return JSON.parse(extracted);
+    }
+    
+    // Look for object pattern if array not found
+    match = jsonString.match(/(\{[\s\S]*\})/);
+    if (match) {
+      const extracted = match[1].trim();
+      return JSON.parse(extracted);
+    }
+    
+    // If no pattern matched, clean the string more aggressively
+    const cleaned = jsonString
+      .replace(/```json/g, '')
+      .replace(/```/g, '')
+      .replace(/\\n/g, '')
+      .replace(/\\"/g, '"')
       .replace(/"|"/g, '"')
-      .replace(/'|'/g, "'");
-
-    return JSON.parse(fixed);
+      .replace(/'|'/g, "'")
+      .trim();
+      
+    return JSON.parse(cleaned);
   } catch (e) {
     console.error("❌ Failed to parse JSON safely:", e);
+    console.error("Problem with string:", jsonString);
+    
+    // Last resort: try to manually extract JSON-like content between brackets
+    try {
+      const openBracketPos = jsonString.indexOf('[');
+      const closeBracketPos = jsonString.lastIndexOf(']');
+      
+      if (openBracketPos !== -1 && closeBracketPos !== -1 && openBracketPos < closeBracketPos) {
+        const jsonSubstring = jsonString.substring(openBracketPos, closeBracketPos + 1);
+        return JSON.parse(jsonSubstring);
+      }
+    } catch (fallbackError) {
+      console.error("Fallback extraction also failed:", fallbackError);
+    }
+    
     return null;
   }
 }
