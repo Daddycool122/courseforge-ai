@@ -27,7 +27,7 @@ function EditChapters({course,index,refreshData}) {
     const [about,setAbout] = useState()
 
     const onUpdateHandler = async()=>{
-            course.courseOutput.Chapters[index]["Chapter name"]= name;
+            course.courseOutput.Chapters[index]["Chapter Name"]= name;
             course.courseOutput.Chapters[index]["About"]= about;
             console.log(course);
             const result = await db.update(CourseList).set({
@@ -55,7 +55,7 @@ function EditChapters({course,index,refreshData}) {
       <DialogDescription>
       <div className='mt-3'>
             <label className='text-black'>Chapter name</label>
-            <Input onChange={(e)=>{setName(e.target.value)}} className="mt-2" defaultValue={chapters[index]["Chapter name"]} type={'text'}/>
+            <Input onChange={(e)=>{setName(e.target.value)}} className="mt-2" defaultValue={chapters[index]["Chapter Name"]} type={'text'}/>
 
         </div>
         <div className='mt-3'>

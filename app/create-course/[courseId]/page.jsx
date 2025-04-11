@@ -16,32 +16,26 @@ import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { FaRocket, FaCheckCircle } from "react-icons/fa";
 
-// 🔧 Helper to safely parse AI's JSON response
 function safeParseJSON(jsonString) {
   try {
-    // First try parsing the entire string as JSON directly
     try {
       return JSON.parse(jsonString);
     } catch (e) {
-      // If direct parsing fails, attempt to extract JSON
       console.log("Direct parsing failed, trying to extract JSON...");
     }
 
-    // Look for array pattern first (most common for chapter content)
     let match = jsonString.match(/(\[[\s\S]*\])/);
     if (match) {
       const extracted = match[1].trim();
       return JSON.parse(extracted);
     }
     
-    // Look for object pattern if array not found
     match = jsonString.match(/(\{[\s\S]*\})/);
     if (match) {
       const extracted = match[1].trim();
       return JSON.parse(extracted);
     }
     
-    // If no pattern matched, clean the string more aggressively
     const cleaned = jsonString
       .replace(/```json/g, '')
       .replace(/```/g, '')
@@ -56,7 +50,6 @@ function safeParseJSON(jsonString) {
     console.error("❌ Failed to parse JSON safely:", e);
     console.error("Problem with string:", jsonString);
     
-    // Last resort: try to manually extract JSON-like content between brackets
     try {
       const openBracketPos = jsonString.indexOf('[');
       const closeBracketPos = jsonString.lastIndexOf(']');
@@ -76,7 +69,7 @@ function safeParseJSON(jsonString) {
 function CourseLayout({ params: paramsPromise }) {
   const { user } = useUser();
   const [course, setCourse] = useState(null);
-  const params = React.use(paramsPromise); // Unwrap promise params
+  const params = React.use(paramsPromise); 
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [generationProgress, setGenerationProgress] = useState(0);
@@ -200,7 +193,6 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
       setGenerationProgress(100);
       triggerConfetti();
       
-      // Give time for the user to see the completion and confetti
       setTimeout(() => {
         router.replace(`/create-course/${course?.courseId}/finish`);
       }, 3000);
@@ -251,7 +243,6 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
         className="max-w-6xl mx-auto"
         variants={itemVariants}
       >
-        {/* Header Section */}
         <motion.div className="text-center mb-10" variants={itemVariants}>
           <div className="relative inline-block">
             <h2 className="font-bold text-4xl text-[#15b989]">Course Layout</h2>
@@ -266,7 +257,6 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
           </p>
         </motion.div>
 
-        {/* Loading Dialog */}
         {loading && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full">

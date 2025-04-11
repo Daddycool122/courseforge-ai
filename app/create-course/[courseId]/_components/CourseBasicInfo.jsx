@@ -12,11 +12,10 @@ function CourseBasicInfo({ course,refreshData ,edit=true}) {
     const file = e.target.files[0];
     setSelectedFile(URL.createObjectURL(file));
     const fileName = Date.now()+'.jpg'
-    const storageRef = ref(storage, fileName);
 
   };
   return (
-    <div className='p-10 border rounded-2xl shadow-sm mt-5'>
+    <div className='p-10 bg-gradient-to-b from-[#cdffd8] to-gray-50  border rounded-2xl shadow-sm mt-20'>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <div>
           <div className='flex items-center justify-between'>
@@ -32,7 +31,7 @@ function CourseBasicInfo({ course,refreshData ,edit=true}) {
           </h2>
           {!edit&&
           <Link href={`/create-course/${course?.courseId}/start`} className='w-full'>
-          <Button className="bg-[#18cf97] mt-6 w-full">Start</Button>
+          <Button className=" mt-6 w-full">Start</Button>
         </Link>}
         </div>
         <div className='flex flex-col items-center justify-center'>

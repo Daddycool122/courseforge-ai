@@ -63,7 +63,6 @@ function CourseStart() {
 
   return (
     <div className="flex flex-col md:flex-row">
-      {/* Sidebar - Hidden on mobile */}
       <div className="fixed w-full md:w-64 h-auto md:h-screen border-b md:border-r shadow-sm bg-white z-10 hidden md:block">
         <h2 className="bg-[#18cf97] p-2 font-medium text-white text-base md:text-lg">
           {courseName}
@@ -90,7 +89,6 @@ function CourseStart() {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="w-full md:ml-64 mt-0 md:mt-0">
         {selectedChapter && (
           <div className="p-2 md:p-4 text-lg md:text-xl font-semibold">
@@ -102,7 +100,6 @@ function CourseStart() {
         )}
       </div>
 
-      {/* Optional: Mobile Chapter List Toggle */}
       <div className="md:hidden p-2 bg-blue-200 border-t shadow-sm">
         <select
           className="w-full p-2 border rounded-lg"

@@ -12,8 +12,9 @@ const DashboardLayout = ({children}) => {
             <Sidebar/>
         </div>
         <div className='md:ml-64 p-10 '>
-            <Header/>
-            <div className='p-10'>
+          <div className='w-256 ml-20 rounded-2xl fixed z-10 bg-white'> <Header/></div>
+           
+            <div className='p-10 m-10 '>
             {children}
             </div>
             

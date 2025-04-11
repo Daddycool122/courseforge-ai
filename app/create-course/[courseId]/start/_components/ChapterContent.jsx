@@ -11,25 +11,19 @@ function ChapterContent({ chapter, content }) {
     },
   };
 
-  // Function to format code examples with proper line breaks
-  // Function to format code examples with proper indentation and line breaks
+ 
 const formatCodeExample = (codeExample) => {
   if (!codeExample) return "";
   
-  // First, remove <precode> tags and extract just the code content
   let code = codeExample.replace(/<\/?precode>/g, '');
   
-  // Handle common programming languages structure
   
-  // 1. Add line breaks to key programming syntax
   code = code
-    // Add newlines before and after braces and common control statements
     .replace(/\{/g, ' {\n')
     .replace(/\}/g, '\n}')
     .replace(/;/g, ';\n')
     .replace(/\) /g, ') ')
     
-    // Fix potential over-breaking by consolidating multiple newlines
     .replace(/\n\s*\n/g, '\n')
     
     // Handle if-else, for, while statements
@@ -43,44 +37,37 @@ const formatCodeExample = (codeExample) => {
   let formattedLines = [];
   
   lines.forEach(line => {
-    // Trim the line first
+    
     let trimmedLine = line.trim();
     
-    // Adjust indent level before processing the line
     if (trimmedLine.includes('}') && !trimmedLine.includes('{')) {
       indentLevel = Math.max(0, indentLevel - 1);
     }
     
-    // Add the line with proper indentation
     if (trimmedLine.length > 0) {
       formattedLines.push('  '.repeat(indentLevel) + trimmedLine);
     }
     
-    // Adjust indent level after processing the line
     if (trimmedLine.includes('{') && !trimmedLine.includes('}')) {
       indentLevel++;
     }
   });
   
-  // 3. Wrap in <precode> tags again
   return '<precode>\n' + formattedLines.join('\n') + '\n</precode>';
 };
 
-  // Function to process explanation text - removing ** markers
   const processExplanation = (explanation) => {
     if (!explanation) return "";
     
-    // Simply remove all ** markers without adding HTML tags
     let processed = explanation.replace(/\*\*/g, '');
     
-    // Ensure numbered items (like "1.", "2.") start on new lines
     processed = processed.replace(/([^\n])(\d+\.\s)/g, '$1\n$2');
     
     return processed;
   };
 
   return (
-    <div className="p-4 md:p-10">
+    <div className="p-4 mt-2 md:p-10">
       <h2 className="font-medium text-lg md:text-2xl">
         {chapter?.["Chapter Name"] || chapter?.["Chapter name"]}
       </h2>

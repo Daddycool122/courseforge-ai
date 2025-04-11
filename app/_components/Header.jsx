@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 const Header = () => {
   return (
-    <div className="flex justify-between items-center px-10 py-4 bg-white shadow-md">
+    <div className="flex justify-between items-center px-10 py-4 bg-[#cdffd8] shadow-md">
         <Link href={"/dashboard"}>
       <Image className="py-2" src="/logo.svg" alt="logo" width={60} height={50} />
       </Link>

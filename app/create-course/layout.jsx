@@ -8,7 +8,10 @@ function CreateCourseLayout({children}) {
     <div className='px-10'>
         <UserInputContext.Provider value={{userCourseInput,setUserCourseInput}}>
         
-        <Header className="fixed"/>
+        <div className='fixed w-screen pr-24   z-100 bg-white'>
+        <Header />
+        </div>
+        
         {children}
         
         </UserInputContext.Provider>

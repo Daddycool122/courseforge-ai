@@ -2,14 +2,14 @@ import React, { use } from 'react';
 import { ArrowRight, BookOpen, Brain, GraduationCap } from 'lucide-react';
 const Hero = () => {
   return (
-    <div className="relative overflow-hidden bg-gradient-to-b from-white to-gray-50">
-      {/* Background decorative elements */}
+    <div className="relative overflow-hidden bg-gradient-to-b from-[#cdffd8] to-gray-50">
+     
       <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-green-50 opacity-70 blur-3xl"></div>
       <div className="absolute top-1/2 -left-24 h-96 w-96 rounded-full bg-teal-50 opacity-60 blur-3xl"></div>
       
       <div className="relative mx-auto max-w-screen-xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
         <div className="grid items-center gap-8 lg:grid-cols-2">
-          {/* Left content */}
+          
           <div className="max-w-xl">
             <div className="mb-4 inline-flex items-center rounded-full bg-green-50 px-3 py-1 text-sm font-medium text-[#18cf97]">
               <span className="mr-1">✨</span> AI-Powered Learning Revolution
@@ -17,14 +17,14 @@ const Hero = () => {
             
             <h1 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
               <span className="block text-[#18cf97]">CourseForge AI</span>
-              <span className="block">Smart Learning, <span className="relative inline-block">
-                <span className="relative z-10">Personalized</span>
+              <span className="block">An Initiative towards <span className="relative inline-block">
+                <span className="relative z-10">IT UTSAV</span>
                 <span className="absolute bottom-2 left-0 z-0 h-3 w-full bg-[#18cf97]/20"></span>
-              </span> For You</span>
+              </span> 3.0</span>
             </h1>
             
             <p className="mb-6 text-lg leading-relaxed text-gray-600">
-              Transform your educational journey with our AI engine that adapts to your unique learning style, tracks your progress, and delivers precisely what you need to excel.
+              Transform your educational journey with with personalized learning experience.
             </p>
             
             <div>
@@ -44,12 +44,11 @@ const Hero = () => {
                 ))}
               </div>
               <div className="ml-3">
-                <span className="text-sm font-medium text-gray-900">Trusted by 10,000+ students</span>
+                <span className="text-sm font-medium text-gray-900">Prototype</span>
               </div>
             </div>
           </div>
           
-          {/* Right content - Feature cards */}
           <div className="grid grid-cols-2 gap-4">
             {[
               { 
@@ -75,7 +74,7 @@ const Hero = () => {
             ].map((feature, index) => (
               <div 
                 key={index}
-                className="relative overflow-hidden rounded-xl border border-gray-100 bg-white p-5 shadow-sm transition-all hover:shadow-md"
+                className="relative overflow-hidden rounded-xl border border-gray-200 bg-green-50 p-5 shadow-sm transition-all hover:shadow-md"
               >
                 <div className="mb-3">{feature.icon}</div>
                 <h3 className="mb-2 text-base font-semibold text-gray-900">{feature.title}</h3>

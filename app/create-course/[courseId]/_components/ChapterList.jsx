@@ -12,7 +12,7 @@ function ChapterList({course,refreshData,edit=true}) {
         <div className='mt-2  shadow-lg'>
            {chapters?.map((chapter,index)=>{
             return (
-                <div key={index} className='flex gap-2 items-center border-gray-200 justify-between border px-3 rounded-2xl py-2'>
+                <div key={index} className='flex gap-2 items-center bg-gradient-to-b from-[#cdffd8] to-gray-50 border-gray-200 justify-between border px-3 rounded-2xl py-2'>
                     <div className='
                     grid px-4 py-4 grid-cols  gap-1'>
                         {chapter?.["Chapter Name" ]?

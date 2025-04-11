@@ -182,7 +182,6 @@ const CreateCourse = () => {
             animate="visible"
             variants={containerVariants}
         >
-            {/* Header */}
             <motion.div 
                 className='flex flex-col items-center justify-center py-10'
                 variants={itemVariants}
@@ -200,7 +199,6 @@ const CreateCourse = () => {
                 </p>
             </motion.div>
 
-            {/* Stepper */}
             <motion.div 
                 className='flex flex-col items-center justify-center mb-12'
                 variants={itemVariants}
@@ -250,7 +248,7 @@ const CreateCourse = () => {
                 </div>
             </motion.div>
 
-            {/* Progress indicator */}
+            
             <motion.div 
                 className="w-full bg-gray-200 rounded-full h-2 mb-8 max-w-3xl mx-auto"
                 variants={itemVariants}
@@ -263,7 +261,7 @@ const CreateCourse = () => {
                 />
             </motion.div>
 
-            {/* Content area with fancy background */}
+            
             <motion.div 
     className="bg-white rounded-2xl p-8 shadow-xl mb-12 relative overflow-hidden"
     variants={itemVariants}
@@ -272,7 +270,7 @@ const CreateCourse = () => {
                 <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-green-50 to-teal-100 rounded-bl-full opacity-50 -z-10" />
                 <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-green-50 to-teal-100 rounded-tr-full opacity-50 -z-10" />
                 
-                {/* Content Components */}
+                
                 <motion.div
     key={activeStep}
     initial={{ opacity: 0, y: 20 }}
@@ -286,7 +284,6 @@ const CreateCourse = () => {
 </motion.div>
             </motion.div>
 
-            {/* Next Prev Button */}
             <motion.div 
                 className="flex justify-between max-w-3xl mt-4 mx-auto px-4 md:px-8"
                 variants={itemVariants}
@@ -343,7 +340,6 @@ const CreateCourse = () => {
                 )}
             </motion.div>
             
-            {/* Step indicators */}
             <motion.div 
                 className="flex justify-center mt-12"
                 variants={itemVariants}

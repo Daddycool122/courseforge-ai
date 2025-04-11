@@ -13,7 +13,7 @@ export default   [
     },
     {
         id:1,
-        name:"Creativity",
+        name:"Communication",
         icon: "/creativity.png",
         prompt: "Create a course on creativity, focusing on techniques to enhance creative thinking and problem-solving skills ."
     },
