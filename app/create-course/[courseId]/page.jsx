@@ -264,40 +264,41 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
           </p>
         </motion.div>
 
+        // ... existing code ...
         {loading && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-4 sm:p-8 rounded-xl shadow-2xl max-w-xs sm:max-w-md w-full mx-2">
-              <div className="text-center">
-                <div className="mb-4">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto border-4 border-t-4 border-t-[#15b989] border-gray-200 rounded-full animate-spin"></div>
+            <div className="bg-white w-[90vw] max-w-xs sm:max-w-md md:max-w-lg p-4 sm:p-6 rounded-xl shadow-2xl mx-2">
+              <div className="text-center flex flex-col items-center gap-4">
+                <div className="mb-2 sm:mb-4">
+                  <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto border-4 border-t-4 border-t-[#15b989] border-gray-200 rounded-full animate-spin"></div>
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold mb-2">Generating Course Content</h3>
-                <p className="text-gray-600 mb-4 text-sm sm:text-base">
+                <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1 sm:mb-2">Generating Course Content</h3>
+                <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-2 sm:mb-4">
                   {generatingChapter ? `Currently working on: "${generatingChapter}"` : "Preparing your course content..."}
                 </p>
 
                 {/* Progress bar */}
-                <div className="w-full bg-gray-200 rounded-full h-3 sm:h-4 mb-4">
+                <div className="w-full bg-gray-200 rounded-full h-2 sm:h-3 md:h-4 mb-2 sm:mb-4">
                   <motion.div 
-                    className="bg-[#15b989] h-3 sm:h-4 rounded-full"
+                    className="bg-[#15b989] h-2 sm:h-3 md:h-4 rounded-full"
                     initial={{ width: "0%" }}
                     animate={{ width: `${generationProgress}%` }}
                     transition={{ duration: 0.5 }}
                   />
                 </div>
-                <p className="text-xs sm:text-sm text-gray-500">
+                <p className="text-[11px] sm:text-xs md:text-sm text-gray-500">
                   {generationProgress.toFixed(0)}% complete
                 </p>
 
                 {/* Completed chapters */}
                 {completedChapters.length > 0 && (
-                  <div className="mt-4 text-left border-t pt-4 max-h-32 sm:max-h-40 overflow-y-auto">
-                    <h4 className="font-medium mb-2 text-xs sm:text-sm">Completed Chapters:</h4>
+                  <div className="mt-3 sm:mt-4 text-left border-t pt-3 sm:pt-4 max-h-20 sm:max-h-32 md:max-h-40 overflow-y-auto w-full">
+                    <h4 className="font-medium mb-1 sm:mb-2 text-xs sm:text-sm">Completed Chapters:</h4>
                     <div>
                       {completedChapters.map((chapter, index) => (
-                        <div key={index} className="flex items-center text-xs sm:text-sm text-gray-600 mb-1">
+                        <div key={index} className="flex items-center text-[11px] sm:text-xs md:text-sm text-gray-600 mb-1">
                           <FaCheckCircle className="text-green-500 mr-2" />
-                          <span>{chapter}</span>
+                          <span className="truncate">{chapter}</span>
                         </div>
                       ))}
                     </div>
@@ -307,6 +308,7 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
             </div>
           </div>
         )}
+// ... existing code ...
 
         {/* Content Sections */}
         <div className="space-y-6 sm:space-y-8">
