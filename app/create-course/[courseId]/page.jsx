@@ -234,61 +234,61 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
 
   return (
     <motion.div 
-      className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 md:px-8 lg:px-16"
+      className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-6 px-2 sm:px-4 md:px-8 lg:px-16"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
       <motion.div
-        className="max-w-6xl mx-auto"
+        className="max-w-6xl mx-auto w-full"
         variants={itemVariants}
       >
-        <motion.div className="text-center mb-10" variants={itemVariants}>
+        <motion.div className="text-center mb-8 sm:mb-10" variants={itemVariants}>
           <div className="relative inline-block">
-            <h2 className="font-bold text-4xl text-[#15b989]">Course Layout</h2>
+            <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-[#15b989]">Course Layout</h2>
             <motion.div 
               className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-[#15b989] h-1 w-0"
               animate={{ width: "80%" }}
               transition={{ delay: 0.5, duration: 0.8 }}
             />
           </div>
-          <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+          <p className="text-gray-600 mt-3 sm:mt-4 max-w-2xl mx-auto text-sm sm:text-base">
             Review your course structure and generate detailed content for each chapter.
           </p>
         </motion.div>
 
         {loading && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full">
+            <div className="bg-white p-4 sm:p-8 rounded-xl shadow-2xl max-w-xs sm:max-w-md w-full mx-2">
               <div className="text-center">
                 <div className="mb-4">
-                  <div className="w-16 h-16 mx-auto border-4 border-t-4 border-t-[#15b989] border-gray-200 rounded-full animate-spin"></div>
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto border-4 border-t-4 border-t-[#15b989] border-gray-200 rounded-full animate-spin"></div>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Generating Course Content</h3>
-                <p className="text-gray-600 mb-4">
+                <h3 className="text-lg sm:text-xl font-bold mb-2">Generating Course Content</h3>
+                <p className="text-gray-600 mb-4 text-sm sm:text-base">
                   {generatingChapter ? `Currently working on: "${generatingChapter}"` : "Preparing your course content..."}
                 </p>
 
                 {/* Progress bar */}
-                <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
+                <div className="w-full bg-gray-200 rounded-full h-3 sm:h-4 mb-4">
                   <motion.div 
-                    className="bg-[#15b989] h-4 rounded-full"
+                    className="bg-[#15b989] h-3 sm:h-4 rounded-full"
                     initial={{ width: "0%" }}
                     animate={{ width: `${generationProgress}%` }}
                     transition={{ duration: 0.5 }}
                   />
                 </div>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs sm:text-sm text-gray-500">
                   {generationProgress.toFixed(0)}% complete
                 </p>
 
                 {/* Completed chapters */}
                 {completedChapters.length > 0 && (
-                  <div className="mt-4 text-left border-t pt-4">
-                    <h4 className="font-medium mb-2 text-sm">Completed Chapters:</h4>
-                    <div className="max-h-40 overflow-y-auto">
+                  <div className="mt-4 text-left border-t pt-4 max-h-32 sm:max-h-40 overflow-y-auto">
+                    <h4 className="font-medium mb-2 text-xs sm:text-sm">Completed Chapters:</h4>
+                    <div>
                       {completedChapters.map((chapter, index) => (
-                        <div key={index} className="flex items-center text-sm text-gray-600 mb-1">
+                        <div key={index} className="flex items-center text-xs sm:text-sm text-gray-600 mb-1">
                           <FaCheckCircle className="text-green-500 mr-2" />
                           <span>{chapter}</span>
                         </div>
@@ -302,35 +302,35 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
         )}
 
         {/* Content Sections */}
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8">
           <motion.div 
-            className="bg-white rounded-xl shadow-lg p-6 overflow-hidden relative"
+            className="bg-white rounded-xl shadow-lg p-4 sm:p-6 overflow-hidden relative"
             variants={itemVariants}
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-green-50 to-teal-100 rounded-bl-full opacity-50 -z-10" />
-            <h3 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">Course Information</h3>
+            <div className="absolute top-0 right-0 w-32 sm:w-64 h-32 sm:h-64 bg-gradient-to-br from-green-50 to-teal-100 rounded-bl-full opacity-50 -z-10" />
+            <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-800 border-b pb-2">Course Information</h3>
             <CourseBasicInfo course={course} refreshData={() => GetCourse()} />
           </motion.div>
 
           <motion.div 
-            className="bg-white rounded-xl shadow-lg p-6 overflow-hidden relative"
+            className="bg-white rounded-xl shadow-lg p-4 sm:p-6 overflow-hidden relative"
             variants={itemVariants}
           >
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-green-50 to-teal-100 rounded-tr-full opacity-50 -z-10" />
-            <h3 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">Course Details</h3>
+            <div className="absolute bottom-0 left-0 w-24 sm:w-48 h-24 sm:h-48 bg-gradient-to-tr from-green-50 to-teal-100 rounded-tr-full opacity-50 -z-10" />
+            <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-800 border-b pb-2">Course Details</h3>
             <CourseDetails course={course} />
           </motion.div>
 
           <motion.div 
-            className="bg-white rounded-xl shadow-lg p-6"
+            className="bg-white rounded-xl shadow-lg p-4 sm:p-6 overflow-x-auto"
             variants={itemVariants}
           >
-            <h3 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">Chapter List</h3>
+            <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-800 border-b pb-2">Chapter List</h3>
             <ChapterList course={course} refreshData={() => GetCourse()} />
           </motion.div>
 
           <motion.div 
-            className="flex justify-center mt-8"
+            className="flex justify-center mt-6 sm:mt-8"
             variants={itemVariants}
           >
             <motion.div
@@ -338,10 +338,10 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
               whileTap={{ scale: 0.95 }}
             >
               <Button 
-                className="py-6 px-8 rounded-lg text-lg font-medium shadow-lg transition-all duration-300 bg-gradient-to-r from-[#15b989] to-[#0e9d74] text-white hover:from-[#129e74] hover:to-[#0d8c66] flex items-center space-x-3"
+                className="py-4 sm:py-6 px-6 sm:px-8 rounded-lg text-base sm:text-lg font-medium shadow-lg transition-all duration-300 bg-gradient-to-r from-[#15b989] to-[#0e9d74] text-white hover:from-[#129e74] hover:to-[#0d8c66] flex items-center space-x-3"
                 onClick={GenerateChapterContent}
               >
-                <FaRocket className="mr-2" size={20} />
+                <FaRocket className="mr-2" size={18} />
                 <span>Generate Course Content</span>
               </Button>
             </motion.div>
