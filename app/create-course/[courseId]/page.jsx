@@ -315,8 +315,8 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
             variants={itemVariants}
           >
             <div className="absolute top-0 right-0 w-32 sm:w-64 h-32 sm:h-64 bg-gradient-to-br from-green-50 to-teal-100 rounded-bl-full opacity-50 -z-10" />
-            <div className="flex items-center justify-between gap-2">
-              <h3 className="font-semibold text-base sm:text-lg md:text-xl lg:text-2xl text-gray-800 truncate max-w-xs sm:max-w-md md:max-w-lg">
+            <div className="flex items-center justify-between gap-1 sm:gap-2">
+              <h3 className="font-semibold text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-800 truncate max-w-[8rem] sm:max-w-md md:max-w-lg">
                 {courseName}
               </h3>
               {/* Edit button here */}
