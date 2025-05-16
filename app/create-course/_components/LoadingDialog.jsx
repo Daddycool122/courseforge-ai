@@ -6,22 +6,24 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Loader2 } from "lucide-react";
 
 const LoadingDialog = ({ loading }) => {
   return (
     <AlertDialog open={loading}>
-      <AlertDialogContent className="max-w-md">
+      <AlertDialogContent className="w-[90vw] max-w-xs sm:max-w-md p-4 sm:p-6">
         <AlertDialogHeader>
-          <AlertDialogTitle>Generating Your Course</AlertDialogTitle>
-          {/* Fix: Replace <p> with <div> to avoid nesting issues */}
+          <AlertDialogTitle className="text-base sm:text-lg md:text-xl">Generating Your Course</AlertDialogTitle>
           <AlertDialogDescription>
             <div className="flex flex-col items-center justify-center gap-4 py-4">
-              <Loader2 className="h-12 w-12 animate-spin text-primary" />
-              {/* This h2 was causing the hydration error when inside a <p> */}
+              {/* Add the GIF here */}
+              <img
+                src="/resolution.gif"
+                alt="Loading animation"
+                className="w-24 h-24 sm:w-32 sm:h-32 object-contain"
+              />
               <div className="text-center">
-                <h2 className="text-lg font-semibold">Please wait</h2>
-                <p className="text-sm text-gray-500">
+                <h2 className="text-base sm:text-lg font-semibold">Please wait</h2>
+                <p className="text-xs sm:text-sm text-gray-500">
                   Our AI is crafting your perfect course layout...
                 </p>
               </div>
