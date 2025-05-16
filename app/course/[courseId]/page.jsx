@@ -23,16 +23,17 @@ function Course({params}) {
         
     }
   return (
-    <div>
-      <div className='fixed w-screen '>
-      <Header />
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      {/* Responsive fixed header */}
+      <div className='fixed w-full top-0 left-0 z-50'>
+        <Header />
       </div>
-        <div className='px-10    p-10 md:px-20 lg:px-44'>
+      {/* Responsive content container with top padding to avoid header overlap */}
+      <div className='pt-20 px-2 sm:px-4 md:px-10 lg:px-20 xl:px-44 max-w-screen-xl mx-auto w-full'>
         <CourseBasicInfo course={course} edit={false}/>
         <CourseDetails course={course}/>
         <ChapterList course={course} edit={false}/>
-        </div>
-        
+      </div>
     </div>
   )
 }
