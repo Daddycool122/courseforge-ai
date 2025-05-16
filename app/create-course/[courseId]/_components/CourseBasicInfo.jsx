@@ -39,11 +39,11 @@ function CourseBasicInfo({ course,refreshData ,edit=true}) {
             </Link>
           }
         </div>
-        <div className='flex flex-col items-center justify-center'>
+        <div className='flex flex-col items-center justify-center relative z-10'>
           <label htmlFor='upload-image' className='cursor-pointer block w-full max-w-xs sm:max-w-sm md:max-w-md'>
-            <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-gray-200 bg-white">
+            <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-gray-200 bg-white z-0">
               <Image 
-                className='object-cover w-full h-full'
+                className='object-cover w-full h-full z-0'
                 src={"https://i.pinimg.com/1200x/55/30/89/553089e42cf4dd07f0364a768a5bd669.jpg"} 
                 fill
                 alt='course thumbnail'
