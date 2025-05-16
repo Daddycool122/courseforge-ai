@@ -232,6 +232,13 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
     );
   }
 
+  // Add this block to define courseName
+  const courseName =
+    course.courseOutput?.["Course Name"] ||
+    course.courseOutput?.["Course name"] ||
+    course.name ||
+    "";
+
   return (
     <motion.div 
       className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-6 px-2 sm:px-4 md:px-8 lg:px-16 mt-16"
