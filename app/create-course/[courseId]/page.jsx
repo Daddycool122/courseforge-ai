@@ -314,9 +314,11 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
             className="bg-white rounded-xl shadow-lg p-4 sm:p-6 overflow-hidden relative"
             variants={itemVariants}
           >
-            <div className="absolute top-0 right-0 w-32 sm:w-64 h-32 sm:h-64 bg-gradient-to-br from-green-50 to-teal-100 rounded-bl-full opacity-50 -z-10" />
+            {/* Fix: Contain the background image and prevent overflow */}
+            <div className="absolute top-0 right-0 h-20 w-20 sm:h-32 sm:w-64 bg-gradient-to-br from-green-50 to-teal-100 rounded-bl-full opacity-50 -z-10 pointer-events-none overflow-hidden" />
             <div className="flex items-center justify-between gap-1 sm:gap-2">
-              <h3 className="font-semibold text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-800 truncate max-w-[8rem] sm:max-w-md md:max-w-lg">
+              {/* Fix: Smaller font and width for courseName on mobile */}
+              <h3 className="font-semibold text-xs xs:text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-800 truncate max-w-[6rem] xs:max-w-[8rem] sm:max-w-md md:max-w-lg">
                 {courseName}
               </h3>
               {/* Edit button here */}
