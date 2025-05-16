@@ -18,7 +18,7 @@ function FinishScreen({ params: paramsPromise }) {
     if (params && user) {
       GetCourse();
     }
-  }, [params?.courseId, user?.primaryEmailAddress?.emailAddress]);
+  }, [params?.courseId, user?.primaryEmailAddress?.emailAddress ]);
 
   const GetCourse = async () => {
     try {
@@ -44,7 +44,7 @@ function FinishScreen({ params: paramsPromise }) {
         Here you GO! Your Course is ready🌟
       </h2>
       
-      <CourseBasicInfo course={course} refreshData={() => console.log()} />
+      <CourseBasicInfo course={course} edit={false} refreshData={() => console.log()} />
 
       <h2 className="mt-2 md:mt-3 text-sm md:text-base">Course URL</h2>
       <div className="flex flex-col sm:flex-row items-center justify-between gap-2 p-3 md:p-4 m-2 text-gray-400 border rounded-lg">
