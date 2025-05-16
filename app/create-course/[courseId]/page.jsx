@@ -264,7 +264,6 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
           </p>
         </motion.div>
 
-        // ... existing code ...
         {loading && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white w-[90vw] max-w-xs sm:max-w-md md:max-w-lg p-4 sm:p-6 rounded-xl shadow-2xl mx-2">
@@ -308,7 +307,7 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
             </div>
           </div>
         )}
-// ... existing code ...
+
 
         {/* Content Sections */}
         <div className="space-y-6 sm:space-y-8">
