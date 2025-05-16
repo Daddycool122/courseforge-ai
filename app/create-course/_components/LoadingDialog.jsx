@@ -1,40 +1,36 @@
-import Image from "next/image";
+import React from 'react';
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Loader2 } from "lucide-react";
 
-import React from "react";
-
-function LoadingDialog({loading}) {
+const LoadingDialog = ({ loading }) => {
   return (
-    <div>
-      <AlertDialog open={loading}>
-        <AlertDialogContent>
-        <AlertDialogTitle></AlertDialogTitle>
-          <AlertDialogHeader>
-            
-            <AlertDialogDescription>
-              <div className="flex flex-col items-center justify-center">
-              <Image src={'/resolution.gif'} alt={'no'} width={100} height={100}/>
-              <h2>Please wait... AI is generating your course</h2>
+    <AlertDialog open={loading}>
+      <AlertDialogContent className="max-w-md">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Generating Your Course</AlertDialogTitle>
+          {/* Fix: Replace <p> with <div> to avoid nesting issues */}
+          <AlertDialogDescription>
+            <div className="flex flex-col items-center justify-center gap-4 py-4">
+              <Loader2 className="h-12 w-12 animate-spin text-primary" />
+              {/* This h2 was causing the hydration error when inside a <p> */}
+              <div className="text-center">
+                <h2 className="text-lg font-semibold">Please wait</h2>
+                <p className="text-sm text-gray-500">
+                  Our AI is crafting your perfect course layout...
+                </p>
               </div>
-              
-              
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+            </div>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+      </AlertDialogContent>
+    </AlertDialog>
   );
-}
+};
 
 export default LoadingDialog;

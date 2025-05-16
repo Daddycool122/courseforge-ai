@@ -1,6 +1,6 @@
 import React from "react";
 import YouTube from "react-youtube";
-import DOMPurify from "dompurify"; // Add this package for security
+import DOMPurify from "dompurify"; 
 
 function ChapterContent({ chapter, content }) {
   const opts = {
@@ -80,7 +80,7 @@ const formatCodeExample = (codeExample) => {
             videoId={content?.videoId}
             opts={opts}
             key={content?.videoId}
-            className="w-full h-[200px] md:h-[390px]" // Responsive height
+            className="w-full h-[200px] md:h-[390px]" 
           />
         </div>
       </div>
