@@ -195,13 +195,14 @@ Explain Chapter "${chapterName}" of Course "${course?.name}" in detail.
       
       setTimeout(() => {
         router.replace(`/create-course/${course?.courseId}/finish`);
+        // Loading will be cleared when component unmounts during navigation
       }, 3000);
 
     } catch (error) {
       console.error("❌ Error in GenerateChapterContent:", error);
-    } finally {
-      setLoading(false);
+      setLoading(false); // Only clear loading on error
     }
+    // Remove finally block to keep loading active during redirect
   };
 
   const containerVariants = {

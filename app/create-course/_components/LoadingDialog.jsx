@@ -1,39 +1,35 @@
 import React from 'react';
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 
 const LoadingDialog = ({ loading }) => {
+  if (!loading) return null;
+  
   return (
-    <AlertDialog open={loading}>
-      <div className="fixed inset-0 flex items-center justify-center z-50">
-        <AlertDialogContent className="w-[95vw] max-w-xs sm:max-w-md md:max-w-lg p-3 sm:p-6 mx-auto">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-base sm:text-lg md:text-xl">Generating Your Course</AlertDialogTitle>
-            <AlertDialogDescription>
-              <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 py-3 sm:py-4">
-                {/* Add the GIF here */}
-                <img
-                  src="/resolution.gif"
-                  alt="Loading animation"
-                  className="w-20 h-20 xs:w-24 xs:h-24 sm:w-32 sm:h-32 object-contain"
-                />
-                <div className="text-center">
-                  <h2 className="text-sm xs:text-base sm:text-lg font-semibold">Please wait</h2>
-                  <p className="text-xs sm:text-sm text-gray-500">
-                    Our AI is crafting your perfect course layout...
-                  </p>
-                </div>
-              </div>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-        </AlertDialogContent>
+    <div className="fixed inset-0 bg-white/95 backdrop-blur-sm flex items-center justify-center z-[9999]">
+      <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 sm:p-8 mx-4 max-w-md w-full">
+        <div className="flex flex-col items-center justify-center gap-4 py-4">
+          <div className="text-center mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-[#15b989] mb-2">Generating Your Course</h2>
+            <p className="text-gray-600">Our AI is crafting your perfect course layout...</p>
+          </div>
+          
+          {/* Loading GIF */}
+          <div className="flex justify-center">
+            <img
+              src="/resolution.gif"
+              alt="Loading animation"
+              className="w-32 h-32 sm:w-40 sm:h-40 object-contain"
+            />
+          </div>
+          
+          <div className="text-center">
+            <h3 className="text-lg font-semibold text-gray-800">Please wait</h3>
+            <p className="text-sm text-gray-500 mt-1">
+              This may take a few moments...
+            </p>
+          </div>
+        </div>
       </div>
-    </AlertDialog>
+    </div>
   );
 };
 
