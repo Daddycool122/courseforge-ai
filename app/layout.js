@@ -54,7 +54,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="scroll-smooth">
+   <html lang="en" className={inter.className}>
       <head>
         <meta name="theme-color" content="#15b989" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
