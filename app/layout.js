@@ -1,7 +1,10 @@
-import { Outfit, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
+
+
 import "./globals.css";
 import { ClerkProvider, GoogleOneTap } from "@clerk/nextjs";
-
+const inter = Inter({ subsets: ["latin"] });
+const mono = JetBrains_Mono({ subsets: ["latin"] });
 const geistSans = Outfit({
   variable: "--font-geist-sans",
   subsets: ["latin"],
